@@ -1,16 +1,15 @@
 #include <ClaParseReply.hpp>
 
-ClaParseReply::ClaParseReply()
+ClaParseReply::ClaParseReply(QObject* parent) : QObject(parent)
 {
-    connect(this, SIGNAL(signalTakeToken(const QString)),&controller,SLOT(takeToken(const QString)));
+
 }
 
+//Парсим ответ и отправляем в контрол
 void ClaParseReply::replyAuthParse(QNetworkReply *reply)
 {
-
     QJsonDocument jsonResp = QJsonDocument::fromJson(reply->readAll());
     QJsonObject jsonObj = jsonResp.object();
     tokenReply = jsonObj["token"].toString();
-    qDebug() << tokenReply;
- //   emit signalTakeToken (tokenReply);
+    emit signalTakeToken (tokenReply);
 }

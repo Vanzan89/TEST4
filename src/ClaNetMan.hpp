@@ -14,9 +14,9 @@ class ClaNetMan : public QObject
 
 private:
 QNetworkAccessManager *manager;
-ClaParseReply replyer;
+ClaParseReply* replyer;
 public:
-    ClaNetMan();
+    ClaNetMan(QObject* parent = nullptr);
 signals:
 
 public slots:

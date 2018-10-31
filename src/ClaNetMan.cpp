@@ -1,14 +1,14 @@
 #include "ClaNetMan.hpp"
 
 
-ClaNetMan::ClaNetMan()
+ClaNetMan::ClaNetMan(QObject* parent) : QObject(parent)
 {
-
+           replyer = new ClaParseReply(this);
            manager = new QNetworkAccessManager(this);
-           connect(manager,SIGNAL(finished(QNetworkReply*)),&replyer,SLOT(replyAuthParse(QNetworkReply*)));
+           connect(manager,SIGNAL(finished(QNetworkReply*)),replyer,SLOT(replyAuthParse(QNetworkReply*)));
 }
 
-//Делаем запрос на слоте по сигналу от контроллера, отправляем запрос в слот реплаера
+//Делаем запрос на слоте по сигналу от контрола, отправляем запрос в слот реплаера
 void ClaNetMan::doRequestAuth(const QString username, const QString password)
 {
             QNetworkRequest request;

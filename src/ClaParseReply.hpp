@@ -4,19 +4,17 @@
 #include <QNetworkReply>
 #include <QJsonObject>
 #include <QJsonDocument>
-#include "ClaControl.hpp"
-
+#include "ClaParseReply.hpp"
 
 class ClaParseReply : public  QObject
 {
     Q_OBJECT
 private:
-    QString tokenReply;
-    ClaControl controller;
+      QString tokenReply;
 public:
-    ClaParseReply();
+      ClaParseReply(QObject* parent = nullptr);
 signals:
-    signalTakeToken(const QString tokenReply);
+     signalTakeToken(const QString tokenReply);
 public slots:
     void replyAuthParse(QNetworkReply *reply);
 };

@@ -1,11 +1,15 @@
 #include <ClaControl.hpp>
 
-ClaControl::ClaControl()
+ClaControl::ClaControl(QObject* parent) : QObject(parent)
 {
-       connect(this, SIGNAL(signalAuth(const QString,const QString)),&requester,SLOT(doRequestAuth(const QString, const QString)));
+       requester = new ClaNetMan(this);
+       replyer = new ClaParseReply(this);
+       connect(this, SIGNAL(signalAuth(const QString,const QString)),requester,SLOT(doRequestAuth(const QString, const QString)));
+       connect(replyer,SIGNAL(signalTakeToken(const QString)),this,SLOT(takeToken(const QString)));
 }
 
-ClaControl::goLogin()                           //логинимся и отправляем сигнал в слот на создание запроса
+//Логинимся и отправляем сигнал в слот на создание запроса
+ClaControl::goLogin()
 {
     qInfo() << "Enter the username";
     QTextStream s1(stdin);
@@ -16,8 +20,10 @@ ClaControl::goLogin()                           //логинимся и отправляем сигнал 
     emit signalAuth  (username,  password);
 }
 
-ClaControl::takeToken(const QString replyToken)
+//Получаем и сохраняем токен
+ClaControl::takeToken(const QString tokenRepl)
 {
-  //  token = replyToken;
-    qDebug() <<replyToken;
+    token = tokenRepl;
+    qDebug() << "token";
+    qDebug() << token;
 }

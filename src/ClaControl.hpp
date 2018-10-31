@@ -9,18 +9,16 @@ class ClaControl : public QObject
     Q_OBJECT
 
 private:
-  ClaNetMan requester;
-protected:
-  QString const token;
+    ClaNetMan* requester;
+    ClaParseReply* replyer;
+   QString token;
 public:
-    ClaControl();
+    ClaControl(QObject* parent = nullptr);
     goLogin ();
 public slots:
-    takeToken(const QString replyToken);
+    takeToken(const QString tokenRepl);
 signals:
-  signalAuth (const QString username, const QString password);
-
-
+    signalAuth (const QString username, const QString password);
 };
 
 #endif
