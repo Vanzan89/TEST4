@@ -2,7 +2,7 @@
 #define ClaControl_HPP
 #include <QObject>
 #include <QString>
-#include "ClaNetMan.hpp"
+#include "ClaRequest.hpp"
 
 class ClaControl : public QObject
 {
@@ -10,7 +10,7 @@ class ClaControl : public QObject
 
 private:
     QString token;
-    ClaNetMan* requester;
+    ClaRequest *requester;
     ClaParseReply *replyer;
     QNetworkAccessManager *manager;
 public:

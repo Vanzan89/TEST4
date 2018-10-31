@@ -8,13 +8,13 @@
 #include "ClaParseReply.hpp"
 
 
-class ClaNetMan : public QObject
+class ClaRequest : public QObject
 {
             Q_OBJECT
 
 private:
 public:
-    ClaNetMan(QObject* parent = nullptr);
+    ClaRequest(QObject* parent = nullptr);
 signals:
      signalTakeToken(const QString tokenReply);
      signalgoRequestAuth(const QNetworkRequest request, const QByteArray content);

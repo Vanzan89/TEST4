@@ -2,10 +2,9 @@
 
 ClaParseReply::ClaParseReply(QObject* parent) : QObject(parent)
 {
-
 }
 
-//Парсим ответ и отправляем в контрол
+//Parsing the auth reply
 void ClaParseReply::replyAuthParse(QNetworkReply *reply)
 {
     QJsonDocument jsonResp = QJsonDocument::fromJson(reply->readAll());
