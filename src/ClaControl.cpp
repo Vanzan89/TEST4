@@ -30,6 +30,7 @@ void ClaControl::takeToken(const QString tokenRepl)
     qDebug() << token;
 }
 
+//Send the request auth
 void ClaControl::goRequestAuth(const QNetworkRequest request, const QByteArray content)
 {
             manager->post(request, content);

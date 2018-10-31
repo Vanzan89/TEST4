@@ -4,9 +4,8 @@
 #include <QNetworkRequest>
 #include <QUrl>
 #include <QByteArray>
-#include <QTextStream>
-#include "ClaParseReply.hpp"
-
+#include <QJsonObject>
+#include <QJsonDocument>
 
 class ClaRequest : public QObject
 {

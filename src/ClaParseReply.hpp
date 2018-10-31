@@ -2,9 +2,9 @@
 #define ClaParseReply_HPP
 #include <QObject>
 #include <QNetworkReply>
-#include <QJsonObject>
 #include <QJsonDocument>
-#include "ClaParseReply.hpp"
+#include <QJsonObject>
+
 
 class ClaParseReply : public  QObject
 {

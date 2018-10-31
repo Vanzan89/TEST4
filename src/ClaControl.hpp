@@ -1,8 +1,8 @@
 #ifndef ClaControl_HPP
 #define ClaControl_HPP
-#include <QObject>
-#include <QString>
 #include "ClaRequest.hpp"
+#include "ClaParseReply.hpp"
+
 
 class ClaControl : public QObject
 {

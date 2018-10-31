@@ -1,4 +1,4 @@
-#include <ClaParseReply.hpp>
+#include "ClaParseReply.hpp"
 
 ClaParseReply::ClaParseReply(QObject* parent) : QObject(parent)
 {
