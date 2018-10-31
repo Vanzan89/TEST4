@@ -13,14 +13,13 @@ class ClaNetMan : public QObject
             Q_OBJECT
 
 private:
-QNetworkAccessManager *manager;
-ClaParseReply* replyer;
 public:
     ClaNetMan(QObject* parent = nullptr);
 signals:
-
+     signalTakeToken(const QString tokenReply);
+     signalgoRequestAuth(const QNetworkRequest request, const QByteArray content);
 public slots:
-     void doRequestAuth (const QString username, const QString password);
+     void makeRequestAuth (const QString username, const QString password);
 };
 
 #endif

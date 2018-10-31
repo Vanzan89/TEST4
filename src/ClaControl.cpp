@@ -4,12 +4,15 @@ ClaControl::ClaControl(QObject* parent) : QObject(parent)
 {
        requester = new ClaNetMan(this);
        replyer = new ClaParseReply(this);
-       connect(this, SIGNAL(signalAuth(const QString,const QString)),requester,SLOT(doRequestAuth(const QString, const QString)));
+       manager = new QNetworkAccessManager(this);
+       connect(this, SIGNAL(signalAuth(const QString,const QString)),requester,SLOT(makeRequestAuth(const QString, const QString)));
+       connect(requester,SIGNAL(signalgoRequestAuth(const QNetworkRequest,const QByteArray)),this,SLOT(goRequestAuth(const QNetworkRequest,const QByteArray)));
+       connect(manager,SIGNAL(finished(QNetworkReply*)),replyer,SLOT(replyAuthParse(QNetworkReply*)));
        connect(replyer,SIGNAL(signalTakeToken(const QString)),this,SLOT(takeToken(const QString)));
 }
 
 //Логинимся и отправляем сигнал в слот на создание запроса
-ClaControl::goLogin()
+void ClaControl::goLogin()
 {
     qInfo() << "Enter the username";
     QTextStream s1(stdin);
@@ -21,9 +24,13 @@ ClaControl::goLogin()
 }
 
 //Получаем и сохраняем токен
-ClaControl::takeToken(const QString tokenRepl)
+void ClaControl::takeToken(const QString tokenRepl)
 {
     token = tokenRepl;
-    qDebug() << "token";
     qDebug() << token;
+}
+
+void ClaControl::goRequestAuth(const QNetworkRequest request, const QByteArray contentl)
+{
+            manager->post(request, contentl);
 }
