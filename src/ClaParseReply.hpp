@@ -16,6 +16,6 @@ public:
 signals:
      signalTakeToken(const QString tokenReply);
 public slots:
-    void replyAuthParse(QNetworkReply *reply);
+    void replyParse(QNetworkReply *reply);
 };
 #endif

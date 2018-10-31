@@ -17,3 +17,13 @@ void ClaRequest::makeRequestAuth(const QString username, const QString password)
             QByteArray jsonPost = QJsonDocument(data).toJson();
             emit signalgoRequestAuth (request, jsonPost);
 }
+
+void ClaRequest::makeRequestDocCard(const QString id, const QString token)
+{
+
+    QNetworkRequest request;
+    request.setUrl(QUrl("http://courier-api.esphere.ru/api/document/card/" + id.toUtf8()));
+    request.setRawHeader("Content-Type", "application/json");
+    request.setRawHeader("Auth-Token", token.toUtf8());
+    emit signalgoDocCard (request);
+}

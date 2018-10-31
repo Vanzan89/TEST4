@@ -1,4 +1,5 @@
 #include <ClaControl.hpp>
+#include <QList>
 
 ClaControl::ClaControl(QObject* parent) : QObject(parent)
 {
@@ -7,8 +8,11 @@ ClaControl::ClaControl(QObject* parent) : QObject(parent)
        manager = new QNetworkAccessManager(this);
        connect(this, SIGNAL(signalAuth(const QString,const QString)),requester,SLOT(makeRequestAuth(const QString, const QString)));
        connect(requester,SIGNAL(signalgoRequestAuth(const QNetworkRequest,const QByteArray)),this,SLOT(goRequestAuth(const QNetworkRequest,const QByteArray)));
-       connect(manager,SIGNAL(finished(QNetworkReply*)),replyer,SLOT(replyAuthParse(QNetworkReply*)));
+       connect(manager,SIGNAL(finished(QNetworkReply*)),replyer,SLOT(replyParse(QNetworkReply*)));
        connect(replyer,SIGNAL(signalTakeToken(const QString)),this,SLOT(takeToken(const QString)));
+       connect(this,SIGNAL(signalEnterID()),this,SLOT(enterIdDoc()));
+       connect(this,SIGNAL(signalDocCard(QString,QString)),requester,SLOT(makeRequestDocCard(const QString,const QString)));
+       connect(requester,SIGNAL(signalgoDocCard(const QNetworkRequest)),this,SLOT(goRequestDocCard(const QNetworkRequest)));
 }
 
 //Enter the login and password for auth
@@ -27,11 +31,30 @@ void ClaControl::goLogin()
 void ClaControl::takeToken(const QString tokenRepl)
 {
     token = tokenRepl;
-    qDebug() << token;
+    emit signalEnterID();
 }
 
 //Send the request auth
 void ClaControl::goRequestAuth(const QNetworkRequest request, const QByteArray content)
 {
-            manager->post(request, content);
+    manager->post(request, content);
 }
+
+// Go for document card
+void ClaControl::goRequestDocCard(const QNetworkRequest request)
+{
+    QList<QByteArray> test = request.rawHeaderList();
+
+    manager->get(request);
+}
+
+//Test for document card
+void ClaControl::enterIdDoc()
+{
+    qInfo() << "Enter the id";
+    QTextStream s3(stdin);
+    QString id = s3.readLine();
+    emit signalDocCard (id,token);
+}
+
+
