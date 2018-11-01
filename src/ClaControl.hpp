@@ -22,7 +22,7 @@ public:
 public slots:
     void takeToken(const QString tokenRepl);
     void goRequestAuth(const QNetworkRequest request, const QByteArray content);
-    void goRequestDocCard (const QNetworkRequest request);
+    void goGetRequest (const QNetworkRequest request);
     void enterIdDoc();
     void takeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply);
 signals:

@@ -25,5 +25,5 @@ void ClaRequest::makeRequestDocCard(const QString id, const QString token)
     request.setUrl(QUrl("http://courier-api.esphere.ru/api/document/card/" + id.toUtf8()));
     request.setRawHeader("Content-Type", "application/json");
     request.setRawHeader("Auth-Token", token.toUtf8());
-    emit signalgoDocCard (request);
+    emit signalGoGetRequest (request);
 }

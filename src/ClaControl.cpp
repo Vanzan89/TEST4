@@ -12,7 +12,7 @@ ClaControl::ClaControl(QObject* parent) : QObject(parent)
        connect(replyer,SIGNAL(signalTakeToken(const QString)),this,SLOT(takeToken(const QString)));
        connect(this,SIGNAL(signalEnterID()),this,SLOT(enterIdDoc()));
        connect(this,SIGNAL(signalDocCard(QString,QString)),requester,SLOT(makeRequestDocCard(const QString,const QString)));
-       connect(requester,SIGNAL(signalgoDocCard(const QNetworkRequest)),this,SLOT(goRequestDocCard(const QNetworkRequest)));
+       connect(requester,SIGNAL(signalGoGetRequest(const QNetworkRequest)),this,SLOT(goGetRequest(const QNetworkRequest)));
        connect(replyer,SIGNAL(signalTakeDocCard(const QString,const QString,const QString)),this,SLOT(takeDocCard(const QString,const QString,const QString)));
 }
 
@@ -42,7 +42,7 @@ void ClaControl::goRequestAuth(const QNetworkRequest request, const QByteArray c
 }
 
 // Go for document card
-void ClaControl::goRequestDocCard(const QNetworkRequest request)
+void ClaControl::goGetRequest(const QNetworkRequest request)
 {
     manager->get(request);
 }
@@ -53,7 +53,15 @@ void ClaControl::enterIdDoc()
     qInfo() << "Enter ID of the document: ";
     QTextStream s3(stdin);
     QString id = s3.readLine();
-    emit signalDocCard (id,token);
+    qInfo() << "What do you want do to know? \n Type And Number (press T) \n Route (press R)";
+    QTextStream s4(stdin);
+    QString choose = s4.readLine();
+    if (choose == 'T')
+    {
+       emit signalDocCard (id,token);
+    } else{
+        qInfo() << "Maintance. Plz come later!";
+    }
 }
 
 void ClaControl::takeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply)
@@ -61,6 +69,8 @@ void ClaControl::takeDocCard(const QString numberReply, const QString senderRepl
     qDebug() << "Number of the document: " << numberReply;
     qDebug() << "Type of the document: " << documentTypeCodeReply;
     qDebug() << "sender ID: " << senderReply;
+
 }
+
 
 

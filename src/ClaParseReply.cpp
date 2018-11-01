@@ -21,6 +21,7 @@ void ClaParseReply::replyParse(QNetworkReply *reply)
     emit signalTakeToken (tokenReply);
         }
     else {
+                                                                                                        // Здесь прописать выборку в зависимости от состояний control
          QString numberReply = jsonObj["number"].toString();
          int senderReplyInt = jsonObj["senderId"].toInt();
          QString senderReply = QString::number(senderReplyInt);
