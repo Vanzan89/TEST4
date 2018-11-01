@@ -11,6 +11,8 @@ class ClaParseReply : public  QObject
     Q_OBJECT
 private:
       QString tokenReply;
+      QString idReply;
+       int       idReply2;
 public:
       ClaParseReply(QObject* parent = nullptr);
 signals:
