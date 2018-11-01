@@ -24,6 +24,7 @@ public slots:
     void goRequestAuth(const QNetworkRequest request, const QByteArray content);
     void goRequestDocCard (const QNetworkRequest request);
     void enterIdDoc();
+    void takeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply);
 signals:
          signalAuth (const QString username, const QString password);
          signalDocCard (const QString id, const QString token);

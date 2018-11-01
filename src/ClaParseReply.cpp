@@ -10,25 +10,22 @@ ClaParseReply::ClaParseReply(QObject* parent) : QObject(parent)
 //Parsing the auth reply
 void ClaParseReply::replyParse(QNetworkReply *reply)
 {
-   QByteArray data = reply->readAll();
+    QByteArray data = reply->readAll();
     QString response = (QString)data;
-    qDebug() << response;
     QJsonDocument jsonResp = QJsonDocument::fromJson(data);
     QJsonObject jsonObj = jsonResp.object();
     if (jsonObj["token"].toString() != 0)
     {
     tokenReply = jsonObj["token"].toString();
-    qDebug() << tokenReply;
-    qDebug() << "token!";
+    qDebug() << "You are authorized!";
     emit signalTakeToken (tokenReply);
         }
     else {
-         idReply = jsonObj["number"].toString();
-         qDebug() <<"Number: " << idReply;
-         idReply2 = jsonObj["senderId"].toInt();
-         qDebug() << "senderId1" << idReply2;
-         qDebug() << "senderId2" << QString::number(idReply2);
+         QString numberReply = jsonObj["number"].toString();
+         int senderReplyInt = jsonObj["senderId"].toInt();
+         QString senderReply = QString::number(senderReplyInt);
+         QString documentTypeCodeReply = jsonObj["documentTypeCode"].toString();
+         emit signalTakeDocCard(numberReply, senderReply, documentTypeCodeReply);
         }
-    //Need to think how to control type of parse from control
 }
 

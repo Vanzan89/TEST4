@@ -13,6 +13,7 @@ ClaControl::ClaControl(QObject* parent) : QObject(parent)
        connect(this,SIGNAL(signalEnterID()),this,SLOT(enterIdDoc()));
        connect(this,SIGNAL(signalDocCard(QString,QString)),requester,SLOT(makeRequestDocCard(const QString,const QString)));
        connect(requester,SIGNAL(signalgoDocCard(const QNetworkRequest)),this,SLOT(goRequestDocCard(const QNetworkRequest)));
+       connect(replyer,SIGNAL(signalTakeDocCard(const QString,const QString,const QString)),this,SLOT(takeDocCard(const QString,const QString,const QString)));
 }
 
 //Enter the login and password for auth
@@ -43,18 +44,23 @@ void ClaControl::goRequestAuth(const QNetworkRequest request, const QByteArray c
 // Go for document card
 void ClaControl::goRequestDocCard(const QNetworkRequest request)
 {
-    QList<QByteArray> test = request.rawHeaderList();
-
     manager->get(request);
 }
 
 //Test for document card
 void ClaControl::enterIdDoc()
 {
-    qInfo() << "Enter the id";
+    qInfo() << "Enter ID of the document: ";
     QTextStream s3(stdin);
     QString id = s3.readLine();
     emit signalDocCard (id,token);
+}
+
+void ClaControl::takeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply)
+{
+    qDebug() << "Number of the document: " << numberReply;
+    qDebug() << "Type of the document: " << documentTypeCodeReply;
+    qDebug() << "sender ID: " << senderReply;
 }
 
 
