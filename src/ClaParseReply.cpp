@@ -15,6 +15,7 @@ void ClaParseReply::replyParse(QNetworkReply *reply)
 {
     QByteArray data = reply->readAll();
     QString response = (QString)data;
+    qDebug() << response;
     QJsonDocument jsonResp = QJsonDocument::fromJson(data);
     QJsonObject jsonObj = jsonResp.object();
     if (jsonObj["token"].toString() != 0)

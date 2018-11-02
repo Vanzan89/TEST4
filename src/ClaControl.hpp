@@ -1,5 +1,6 @@
 #ifndef ClaControl_HPP
 #define ClaControl_HPP
+#include <windows.h>
 #include "ClaRequest.hpp"
 #include "ClaParseReply.hpp"
 
@@ -18,7 +19,6 @@ private:
     QNetworkAccessManager *manager;
 public:
     ClaControl(QObject* parent = nullptr);
-    int State;
     void goLogin ();
 public slots:
     void takeToken(const QString tokenRepl);

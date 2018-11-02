@@ -53,20 +53,19 @@ void ClaControl::enterIdDoc()
     qInfo() << "Enter ID of the document: ";
     QTextStream s3(stdin);
     QString id = s3.readLine();
+
+
     qInfo() << "What do you want do to know? \n Type And Number (1) \n Route (2)";
     QTextStream s4(stdin);
     QString choose = s4.readLine();
     int chooseint =choose.toInt();
-
     switch (chooseint) {
     case 1:
-        State = 1;
-        replyer->setState(State);
+        replyer->setState(chooseint);
        emit signalDocCard (id,token);
         break;
     case 2:
-        State = 2;
-        replyer->setState(State);
+        replyer->setState(chooseint);
         qInfo() << "Maintance. Plz come later!";
         emit signalDocCard (id,token);
         break;
