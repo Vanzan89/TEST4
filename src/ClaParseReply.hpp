@@ -13,10 +13,18 @@ private:
       QString tokenReply;
 public:
       ClaParseReply(QObject* parent = nullptr);
+      int StateReply;
 signals:
      signalTakeToken(const QString tokenReply);
+      signalNotToken (const QJsonObject jsonObj);
+     signalParseDocCard (const QJsonObject jsonObj);
+     signalSomethingElse (const QJsonObject jsonObj);
      signalTakeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply);
 public slots:
     void replyParse(QNetworkReply *reply);
+    void RouteOptions (const QJsonObject jsonObj);
+    void ParseDocCard(const QJsonObject jsonObj);
+    void SomethingElse(const QJsonObject jsonObj);
+    void setState(int State);
 };
 #endif

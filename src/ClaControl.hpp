@@ -18,6 +18,7 @@ private:
     QNetworkAccessManager *manager;
 public:
     ClaControl(QObject* parent = nullptr);
+    int State;
     void goLogin ();
 public slots:
     void takeToken(const QString tokenRepl);

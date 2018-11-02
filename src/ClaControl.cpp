@@ -53,14 +53,24 @@ void ClaControl::enterIdDoc()
     qInfo() << "Enter ID of the document: ";
     QTextStream s3(stdin);
     QString id = s3.readLine();
-    qInfo() << "What do you want do to know? \n Type And Number (press T) \n Route (press R)";
+    qInfo() << "What do you want do to know? \n Type And Number (1) \n Route (2)";
     QTextStream s4(stdin);
     QString choose = s4.readLine();
-    if (choose == 'T')
-    {
+    int chooseint =choose.toInt();
+
+    switch (chooseint) {
+    case 1:
+        State = 1;
+        replyer->setState(State);
        emit signalDocCard (id,token);
-    } else{
+        break;
+    case 2:
+        State = 2;
+        replyer->setState(State);
         qInfo() << "Maintance. Plz come later!";
+        emit signalDocCard (id,token);
+        break;
+    default: qInfo() << "You have entered the invalid number";
     }
 }
 
