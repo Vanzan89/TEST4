@@ -1,6 +1,5 @@
 #ifndef ClaControl_HPP
 #define ClaControl_HPP
-#include <windows.h>
 #include "ClaRequest.hpp"
 #include "ClaParseReply.hpp"
 
@@ -22,7 +21,7 @@ public:
     void goLogin ();
 public slots:
     void takeToken(const QString tokenRepl);
-    void goRequestAuth(const QNetworkRequest request, const QByteArray content);
+    void goPostRequest(const QNetworkRequest request, const QByteArray content);
     void goGetRequest (const QNetworkRequest request);
     void enterIdDoc();
     void takeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply);

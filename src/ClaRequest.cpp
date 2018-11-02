@@ -15,7 +15,7 @@ void ClaRequest::makeRequestAuth(const QString username, const QString password)
             data["Username"] = QString(username);
             data["Password"] = QString(password);
             QByteArray jsonPost = QJsonDocument(data).toJson();
-            emit signalgoRequestAuth (request, jsonPost);
+            emit signalGoPostRequest (request, jsonPost);
 }
 
 void ClaRequest::makeRequestDocCard(const QString id, const QString token)

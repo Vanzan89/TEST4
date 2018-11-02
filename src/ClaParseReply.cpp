@@ -25,13 +25,13 @@ void ClaParseReply::replyParse(QNetworkReply *reply)
     emit signalTakeToken (tokenReply);
         }
     else {
-       emit signalNotToken (jsonObj);
+     emit signalNotToken (jsonObj);
       }
 }
 
-void ClaParseReply::setState(int State)
+void ClaParseReply::setState(int StateFromControl)
 {
-    StateReply = State;
+    StateReply = StateFromControl;
 }
 
 void ClaParseReply::RouteOptions(const QJsonObject jsonObj)

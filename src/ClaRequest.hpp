@@ -16,7 +16,7 @@ public:
     ClaRequest(QObject* parent = nullptr);
 signals:
      signalTakeToken(const QString tokenReply);
-     signalgoRequestAuth(const QNetworkRequest request, const QByteArray content);
+     signalGoPostRequest(const QNetworkRequest request, const QByteArray content);
      signalGoGetRequest(const QNetworkRequest request);
 public slots:
      void makeRequestAuth (const QString username, const QString password);

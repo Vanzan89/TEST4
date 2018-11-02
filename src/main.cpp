@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include "ClaControl.hpp"
+#include <windows.h>
 int main(int argc, char *argv[])
 {
     SetConsoleCP(1251);
