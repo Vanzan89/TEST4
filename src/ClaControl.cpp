@@ -16,6 +16,7 @@ ClaControl::ClaControl(QObject* parent) : QObject(parent)
        connect(replyer,SIGNAL(signalTakeDocCard(const QString,const QString,const QString)),this,SLOT(takeDocCard(const QString,const QString,const QString)));
        connect(this,SIGNAL(signalChooser(const QString)),this,SLOT(Chooser(const QString)));
        connect(replyer,SIGNAL(signalGoLoginAgain()),this,SLOT(goLogin()));
+       connect(replyer,SIGNAL(signalTakePDFReady(QString)),this,SLOT(takePDFReady(QString)));
 }
 
 //Enter the login and password for auth
@@ -43,13 +44,13 @@ void ClaControl::goPostRequest(const QNetworkRequest request, const QByteArray c
     manager->post(request, content);
 }
 
-// Go for get request
+// Send get request
 void ClaControl::goGetRequest(const QNetworkRequest request)
 {
     manager->get(request);
 }
 
-//Test for document card
+//Need to rebuild for reading the config list
 void ClaControl::enterIdDoc()
 {
     qInfo() << "Enter ID of the document: ";
@@ -58,6 +59,7 @@ void ClaControl::enterIdDoc()
     emit signalChooser(id);
 }
 
+//Choose what to do with document
 void ClaControl::Chooser (const QString id)
 {
     qInfo() << "What do you want do to know? \n Type And Number (1) \n Get PDF (2)";
@@ -80,12 +82,20 @@ void ClaControl::Chooser (const QString id)
            emit signalDoc (id,token,type);
 }
 
+//Some info from Document Card
 void ClaControl::takeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply)
 {
     qDebug() << "Number of the document: " << numberReply;
     qDebug() << "Type of the document: " << documentTypeCodeReply;
     qDebug() << "sender ID: " << senderReply;
+    emit signalEnterID();
 }
 
+//We have downloaded pdf
+void ClaControl::takePDFReady(const QString info)
+{
+    qDebug() << info;
+ //   emit signalEnterID();
+}
 
 

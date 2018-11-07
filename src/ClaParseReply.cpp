@@ -50,6 +50,7 @@ void ClaParseReply::RouteOptions(const QJsonObject jsonObj)
     }
         }
 
+//Parse elements of Document Card
 void ClaParseReply::ParseDocCard(const QJsonObject jsonObj)
 {
             QString numberReply = jsonObj["number"].toString();
@@ -59,16 +60,18 @@ void ClaParseReply::ParseDocCard(const QJsonObject jsonObj)
             emit signalTakeDocCard(numberReply, senderReply, documentTypeCodeReply);
 }
 
+//Download PDF
 void ClaParseReply::ParsePDF(const QJsonObject jsonObj)
 {
             QString pdfBase64 = jsonObj["content"].toString();
             QByteArray b64 = QByteArray::fromBase64(pdfBase64.toUtf8());
-            QFile f("/document.pdf");
+            QString filename = "/document.pdf";
+            QFile f(filename);
             f.open(QIODevice::WriteOnly);
             f.write(b64);
             f.close();
-            qInfo() << "In process!";
-
+            QString info = "PDF is downloaded to " + filename;
+            emit signalTakePDFReady(info);
 }
 
 

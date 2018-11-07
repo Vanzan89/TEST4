@@ -28,6 +28,7 @@ public slots:
     void takeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply);
     void Chooser (const QString iddoc);
     void goLogin ();
+    void takePDFReady(const QString info);
 signals:
          signalAuth (const QString username, const QString password);
          signalDoc (const QString id, const QString token, const QString type);

@@ -18,6 +18,7 @@ void ClaRequest::makeRequestAuth(const QString username, const QString password)
             emit signalGoPostRequest (request, jsonPost);
 }
 
+//Request for Document
 void ClaRequest::makeRequestDoc(const QString id, const QString token, const QString type)
 {
 

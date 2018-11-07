@@ -21,6 +21,7 @@ signals:
      signalParsePDF (const QJsonObject jsonObj);
      signalTakeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply);
      signalGoLoginAgain();
+     signalTakePDFReady(const QString);
 public slots:
     void replyParse(QNetworkReply *reply);
     void RouteOptions (const QJsonObject jsonObj);
