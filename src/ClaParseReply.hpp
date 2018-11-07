@@ -18,13 +18,14 @@ signals:
      signalTakeToken(const QString tokenReply);
       signalNotToken (const QJsonObject jsonObj);
      signalParseDocCard (const QJsonObject jsonObj);
-     signalSomethingElse (const QJsonObject jsonObj);
+     signalParsePDF (const QJsonObject jsonObj);
      signalTakeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply);
+     signalGoLoginAgain();
 public slots:
     void replyParse(QNetworkReply *reply);
     void RouteOptions (const QJsonObject jsonObj);
     void ParseDocCard(const QJsonObject jsonObj);
-    void SomethingElse(const QJsonObject jsonObj);
+    void ParsePDF(const QJsonObject jsonObj);
     void setState(int State);
 };
 #endif

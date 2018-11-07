@@ -20,7 +20,7 @@ signals:
      signalGoGetRequest(const QNetworkRequest request);
 public slots:
      void makeRequestAuth (const QString username, const QString password);
-     void makeRequestDocCard(const QString id, const QString token);
+     void makeRequestDoc (const QString id, const QString token, const QString type);
 };
 
 #endif

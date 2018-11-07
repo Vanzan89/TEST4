@@ -11,9 +11,11 @@ ClaControl::ClaControl(QObject* parent) : QObject(parent)
        connect(manager,SIGNAL(finished(QNetworkReply*)),replyer,SLOT(replyParse(QNetworkReply*)));
        connect(replyer,SIGNAL(signalTakeToken(const QString)),this,SLOT(takeToken(const QString)));
        connect(this,SIGNAL(signalEnterID()),this,SLOT(enterIdDoc()));
-       connect(this,SIGNAL(signalDocCard(QString,QString)),requester,SLOT(makeRequestDocCard(const QString,const QString)));
+       connect(this,SIGNAL(signalDoc(QString,QString,QString)),requester,SLOT(makeRequestDoc(const QString,const QString, const QString)));
        connect(requester,SIGNAL(signalGoGetRequest(const QNetworkRequest)),this,SLOT(goGetRequest(const QNetworkRequest)));
        connect(replyer,SIGNAL(signalTakeDocCard(const QString,const QString,const QString)),this,SLOT(takeDocCard(const QString,const QString,const QString)));
+       connect(this,SIGNAL(signalChooser(const QString)),this,SLOT(Chooser(const QString)));
+       connect(replyer,SIGNAL(signalGoLoginAgain()),this,SLOT(goLogin()));
 }
 
 //Enter the login and password for auth
@@ -35,13 +37,13 @@ void ClaControl::takeToken(const QString tokenRepl)
     emit signalEnterID();
 }
 
-//Send the request auth
+//Send post request
 void ClaControl::goPostRequest(const QNetworkRequest request, const QByteArray content)
 {
     manager->post(request, content);
 }
 
-// Go for document card
+// Go for get request
 void ClaControl::goGetRequest(const QNetworkRequest request)
 {
     manager->get(request);
@@ -52,25 +54,30 @@ void ClaControl::enterIdDoc()
 {
     qInfo() << "Enter ID of the document: ";
     QTextStream s3(stdin);
-    QString id = s3.readLine();
+    QString id = s3.readLine();    
+    emit signalChooser(id);
+}
 
-
-    qInfo() << "What do you want do to know? \n Type And Number (1) \n Route (2)";
+void ClaControl::Chooser (const QString id)
+{
+    qInfo() << "What do you want do to know? \n Type And Number (1) \n Get PDF (2)";
     QTextStream s4(stdin);
     QString choose = s4.readLine();
     int chooseint =choose.toInt();
     switch (chooseint) {
     case 1:
         replyer->setState(chooseint);
-       emit signalDocCard (id,token);
+        type = "card";
         break;
     case 2:
         replyer->setState(chooseint);
-        qInfo() << "Maintance. Plz come later!";
-        emit signalDocCard (id,token);
+        type = "pdf";
         break;
-    default: qInfo() << "You have entered the invalid number";
+    default: {
+        qInfo() << "You have entered the invalid number";
     }
+    }
+           emit signalDoc (id,token,type);
 }
 
 void ClaControl::takeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply)
@@ -78,7 +85,6 @@ void ClaControl::takeDocCard(const QString numberReply, const QString senderRepl
     qDebug() << "Number of the document: " << numberReply;
     qDebug() << "Type of the document: " << documentTypeCodeReply;
     qDebug() << "sender ID: " << senderReply;
-
 }
 
 

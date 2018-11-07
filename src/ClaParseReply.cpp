@@ -7,7 +7,7 @@ ClaParseReply::ClaParseReply(QObject* parent) : QObject(parent)
 {
         connect(this,SIGNAL(signalNotToken(const QJsonObject)),this,SLOT(RouteOptions(const QJsonObject)));
         connect(this,SIGNAL(signalParseDocCard(const QJsonObject)),this,SLOT(ParseDocCard(const QJsonObject)));
-        connect(this,SIGNAL(signalSomethingElse(const QJsonObject)),this,SLOT(SomethingElse(const QJsonObject)));
+        connect(this,SIGNAL(signalParsePDF(const QJsonObject)),this,SLOT(ParsePDF(const QJsonObject)));
 }
 
 //Parsing the auth reply
@@ -41,9 +41,11 @@ void ClaParseReply::RouteOptions(const QJsonObject jsonObj)
        emit signalParseDocCard (jsonObj);
         break;
     case 2:
-       emit signalSomethingElse (jsonObj);
+       emit signalParsePDF (jsonObj);
         break;
     default: qDebug() << "You have entered something wrong, debil!";
+                  qInfo() << "Try one more time";
+            emit signalGoLoginAgain();
     }
         }
 
@@ -56,9 +58,9 @@ void ClaParseReply::ParseDocCard(const QJsonObject jsonObj)
          emit signalTakeDocCard(numberReply, senderReply, documentTypeCodeReply);
 }
 
-void ClaParseReply::SomethingElse(const QJsonObject jsonObj)
+void ClaParseReply::ParsePDF(const QJsonObject jsonObj)
 {
-    qInfo() << "Smth Else!!";
+    qInfo() << "In process!";
 }
 
 
