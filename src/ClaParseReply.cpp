@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QJsonArray>
 #include "ClaControl.hpp"
+#include <QFile>
 
 ClaParseReply::ClaParseReply(QObject* parent) : QObject(parent)
 {
@@ -15,7 +16,7 @@ void ClaParseReply::replyParse(QNetworkReply *reply)
 {
     QByteArray data = reply->readAll();
     QString response = (QString)data;
-    qDebug() << response;
+   // qDebug() << response;
     QJsonDocument jsonResp = QJsonDocument::fromJson(data);
     QJsonObject jsonObj = jsonResp.object();
     if (jsonObj["token"].toString() != 0)
@@ -51,16 +52,23 @@ void ClaParseReply::RouteOptions(const QJsonObject jsonObj)
 
 void ClaParseReply::ParseDocCard(const QJsonObject jsonObj)
 {
-         QString numberReply = jsonObj["number"].toString();
-         int senderReplyInt = jsonObj["senderId"].toInt();
-         QString senderReply = QString::number(senderReplyInt);
-         QString documentTypeCodeReply = jsonObj["documentTypeCode"].toString();
-         emit signalTakeDocCard(numberReply, senderReply, documentTypeCodeReply);
+            QString numberReply = jsonObj["number"].toString();
+            int senderReplyInt = jsonObj["senderId"].toInt();
+            QString senderReply = QString::number(senderReplyInt);
+            QString documentTypeCodeReply = jsonObj["documentTypeCode"].toString();
+            emit signalTakeDocCard(numberReply, senderReply, documentTypeCodeReply);
 }
 
 void ClaParseReply::ParsePDF(const QJsonObject jsonObj)
 {
-    qInfo() << "In process!";
+            QString pdfBase64 = jsonObj["content"].toString();
+            QByteArray b64 = QByteArray::fromBase64(pdfBase64.toUtf8());
+            QFile f("/document.pdf");
+            f.open(QIODevice::WriteOnly);
+            f.write(b64);
+            f.close();
+            qInfo() << "In process!";
+
 }
 
 
