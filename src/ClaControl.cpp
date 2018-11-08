@@ -57,8 +57,7 @@ void ClaControl::enterIdDoc()
 
     qInfo() << "Enter ID of the document: ";
     QTextStream s3(stdin);
-    QString id2 = s3.readLine();
-    id = &id2;
+    *id = s3.readLine();
     emit signalChooser();
 }
 
