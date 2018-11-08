@@ -11,6 +11,7 @@ class ClaParseReply : public  QObject
     Q_OBJECT
 private:
       QString tokenReply;
+      QString id;
 public:
       ClaParseReply(QObject* parent = nullptr);
       int StateReply;
@@ -28,5 +29,6 @@ public slots:
     void ParseDocCard(const QJsonObject jsonObj);
     void ParsePDF(const QJsonObject jsonObj);
     void setState(int State);
+    void setId(QString idext);
 };
 #endif

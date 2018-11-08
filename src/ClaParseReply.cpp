@@ -2,7 +2,6 @@
 #include <QFile>
 #include <QJsonArray>
 #include "ClaControl.hpp"
-#include <QFile>
 
 ClaParseReply::ClaParseReply(QObject* parent) : QObject(parent)
 {
@@ -35,6 +34,11 @@ void ClaParseReply::setState(int StateFromControl)
     StateReply = StateFromControl;
 }
 
+void ClaParseReply::setId(QString idext)
+{
+    id = idext;
+}
+
 void ClaParseReply::RouteOptions(const QJsonObject jsonObj)
         {
     switch (StateReply) {
@@ -65,7 +69,7 @@ void ClaParseReply::ParsePDF(const QJsonObject jsonObj)
 {
             QString pdfBase64 = jsonObj["content"].toString();
             QByteArray b64 = QByteArray::fromBase64(pdfBase64.toUtf8());
-            QString filename = "/document.pdf";
+            QString filename = "/document" + id + ".pdf";
             QFile f(filename);
             f.open(QIODevice::WriteOnly);
             f.write(b64);

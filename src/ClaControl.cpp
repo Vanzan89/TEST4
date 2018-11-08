@@ -1,12 +1,12 @@
 #include <ClaControl.hpp>
-#include <QList>
 
 ClaControl::ClaControl(QObject* parent) : QObject(parent)
 {
        requester = new ClaRequest(this);
        replyer = new ClaParseReply(this);
        manager = new QNetworkAccessManager(this);
-       const QString *token = new const QString;
+       token = new const QString;
+       id = new QString;
        connect(this, SIGNAL(signalAuth(const QString,const QString)),requester,SLOT(makeRequestAuth(const QString, const QString)));
        connect(requester,SIGNAL(signalGoPostRequest(const QNetworkRequest,const QByteArray)),this,SLOT(goPostRequest(const QNetworkRequest,const QByteArray)));
        connect(manager,SIGNAL(finished(QNetworkReply*)),replyer,SLOT(replyParse(QNetworkReply*)));
@@ -15,7 +15,7 @@ ClaControl::ClaControl(QObject* parent) : QObject(parent)
        connect(this,SIGNAL(signalDoc(QString,QString,QString)),requester,SLOT(makeRequestDoc(const QString,const QString, const QString)));
        connect(requester,SIGNAL(signalGoGetRequest(const QNetworkRequest)),this,SLOT(goGetRequest(const QNetworkRequest)));
        connect(replyer,SIGNAL(signalTakeDocCard(const QString,const QString,const QString)),this,SLOT(takeDocCard(const QString,const QString,const QString)));
-       connect(this,SIGNAL(signalChooser(const QString)),this,SLOT(Chooser(const QString)));
+       connect(this,SIGNAL(signalChooser()),this,SLOT(Chooser()));
        connect(replyer,SIGNAL(signalGoLoginAgain()),this,SLOT(goLogin()));
        connect(replyer,SIGNAL(signalTakePDFReady(QString)),this,SLOT(takePDFReady(QString)));
 }
@@ -54,14 +54,16 @@ void ClaControl::goGetRequest(const QNetworkRequest request)
 //Need to rebuild for reading the config list
 void ClaControl::enterIdDoc()
 {
+
     qInfo() << "Enter ID of the document: ";
     QTextStream s3(stdin);
-    QString id = s3.readLine();    
-    emit signalChooser(id);
+    QString id2 = s3.readLine();
+    id = &id2;
+    emit signalChooser();
 }
 
 //Choose what to do with document
-void ClaControl::Chooser (const QString id)
+void ClaControl::Chooser ()
 {
     qInfo() << "What do you want do to know? \n Type And Number (1) \n Get PDF (2)";
     QTextStream s4(stdin);
@@ -74,13 +76,14 @@ void ClaControl::Chooser (const QString id)
         break;
     case 2:
         replyer->setState(chooseint);
+        replyer->setId(*id);
         type = "pdf";
         break;
     default: {
         qInfo() << "You have entered the invalid number";
     }
     }
-           emit signalDoc (id,*token,type);
+           emit signalDoc (*id,*token,type);
 }
 
 //Some info from Document Card
@@ -98,5 +101,4 @@ void ClaControl::takePDFReady(const QString info)
     qDebug() << info;
     emit signalEnterID();
 }
-
 
