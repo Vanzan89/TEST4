@@ -9,7 +9,7 @@ class ClaControl : public QObject
     Q_OBJECT
 
 private:
-    QString token;
+    const QString *token;
     QList<QByteArray> test;
     QString data;
     QString id;

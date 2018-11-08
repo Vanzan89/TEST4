@@ -12,6 +12,7 @@ class ClaRequest : public QObject
             Q_OBJECT
 
 private:
+    QNetworkRequest *request;
 public:
     ClaRequest(QObject* parent = nullptr);
 signals:

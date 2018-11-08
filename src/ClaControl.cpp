@@ -6,6 +6,7 @@ ClaControl::ClaControl(QObject* parent) : QObject(parent)
        requester = new ClaRequest(this);
        replyer = new ClaParseReply(this);
        manager = new QNetworkAccessManager(this);
+       const QString *token = new const QString;
        connect(this, SIGNAL(signalAuth(const QString,const QString)),requester,SLOT(makeRequestAuth(const QString, const QString)));
        connect(requester,SIGNAL(signalGoPostRequest(const QNetworkRequest,const QByteArray)),this,SLOT(goPostRequest(const QNetworkRequest,const QByteArray)));
        connect(manager,SIGNAL(finished(QNetworkReply*)),replyer,SLOT(replyParse(QNetworkReply*)));
@@ -34,7 +35,7 @@ void ClaControl::goLogin()
 //We got a token now
 void ClaControl::takeToken(const QString tokenRepl)
 {
-    token = tokenRepl;
+     token =  &tokenRepl;
     emit signalEnterID();
 }
 
@@ -79,7 +80,7 @@ void ClaControl::Chooser (const QString id)
         qInfo() << "You have entered the invalid number";
     }
     }
-           emit signalDoc (id,token,type);
+           emit signalDoc (id,*token,type);
 }
 
 //Some info from Document Card
@@ -95,7 +96,7 @@ void ClaControl::takeDocCard(const QString numberReply, const QString senderRepl
 void ClaControl::takePDFReady(const QString info)
 {
     qDebug() << info;
- //   emit signalEnterID();
+    emit signalEnterID();
 }
 
 
