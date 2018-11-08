@@ -66,15 +66,14 @@ void ClaControl::Chooser ()
 {
     qInfo() << "What do you want do to know? \n Type And Number (1) \n Get PDF (2)";
     QTextStream s4(stdin);
-    QString choose = s4.readLine();
-    int chooseint =choose.toInt();
-    switch (chooseint) {
+    int choose = s4.readLine().toInt();
+    switch (choose) {
     case 1:
-        replyer->setState(chooseint);
+        replyer->setState(choose);
         type = "card";
         break;
     case 2:
-        replyer->setState(chooseint);
+        replyer->setState(choose);
         replyer->setId(*id);
         type = "pdf";
         break;
