@@ -12,7 +12,7 @@ class ClaControl : public QObject
 private:
     const QString *token;
     QString tokentemp;
-    QList<QByteArray> test;
+    QList<QString> list;
     QString data;
     ClaRequest *requester;
     ClaParseReply *replyer;
@@ -22,6 +22,8 @@ public:
     explicit ClaControl(QObject* parent = nullptr);
     QString *id;
     QString idext;
+    QString *qspointer;
+    int index;
 public slots:
     void takeToken(const QString tokenRepl);
     void goPostRequest(const QNetworkRequest request, const QByteArray content);

@@ -54,23 +54,31 @@ void ClaControl::goGetRequest(const QNetworkRequest request)
 //Need to rebuild for reading the config list
 void ClaControl::enterIdDoc()
 {
-  /*  QString filename = "/config.txt";
-    QFile inputFile(filename);
-    if (inputFile.open(QIODevice::ReadOnly))
+
+    QString filename = "/config.txt";
+    QFile idFile(filename);
+    if (idFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-       QTextStream in(&inputFile);
+       QTextStream in(&idFile);
        while (!in.atEnd())
        {
           QString line = in.readLine();
-          ...
+            list << line;
+        //    id = new QString;
+       //   *id = line;
        }
-       inputFile.close();
+       idFile.close();
     }
-*/
-    qInfo() << "Enter ID of the document: ";
-     id = new QString;
-    QTextStream s3(stdin);
-    *id = s3.readLine();
+    qDebug() << list[0];
+    qDebug() << list[1];
+    qDebug() << list;
+    QString s;
+    foreach  (s, list)
+    {
+        qDebug() << s;
+    }
+    qDebug() << "That's all!";
+
     emit signalChooser();
 }
 
