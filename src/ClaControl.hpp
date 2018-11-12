@@ -2,6 +2,7 @@
 #define ClaControl_HPP
 #include "ClaRequest.hpp"
 #include "ClaParseReply.hpp"
+#include <QFile>
 
 
 class ClaControl : public QObject
@@ -10,15 +11,16 @@ class ClaControl : public QObject
 
 private:
     const QString *token;
+    QString tokentemp;
     QList<QByteArray> test;
     QString data;
-    QString *id;
     ClaRequest *requester;
     ClaParseReply *replyer;
     QNetworkAccessManager *manager;
     QString type;
 public:
     explicit ClaControl(QObject* parent = nullptr);
+    QString *id;
     QString idext;
 public slots:
     void takeToken(const QString tokenRepl);
@@ -31,7 +33,7 @@ public slots:
     void takePDFReady(const QString info);
 signals:
          signalAuth (const QString username, const QString password);
-         signalDoc (const QString id, const QString token, const QString type);
+         signalDoc (const QString *id, const QString token, const QString type);
          signalEnterID();
          signalChooser();
 };

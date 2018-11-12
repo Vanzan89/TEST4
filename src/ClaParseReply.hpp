@@ -29,6 +29,6 @@ public slots:
     void ParseDocCard(const QJsonObject jsonObj);
     void ParsePDF(const QJsonObject jsonObj);
     void setState(int State);
-    void setId(QString idext);
+    void setId(QString *idext);
 };
 #endif

@@ -1,7 +1,6 @@
 #include "ClaParseReply.hpp"
 #include <QFile>
 #include <QJsonArray>
-#include "ClaControl.hpp"
 
 ClaParseReply::ClaParseReply(QObject* parent) : QObject(parent)
 {
@@ -14,8 +13,7 @@ ClaParseReply::ClaParseReply(QObject* parent) : QObject(parent)
 void ClaParseReply::replyParse(QNetworkReply *reply)
 {
     QByteArray data = reply->readAll();
-    QString response = (QString)data;
-   // qDebug() << response;
+    //QString response = (QString)data;
     QJsonDocument jsonResp = QJsonDocument::fromJson(data);
     QJsonObject jsonObj = jsonResp.object();
     if (jsonObj["token"].toString() != 0)
@@ -34,9 +32,9 @@ void ClaParseReply::setState(int StateFromControl)
     StateReply = StateFromControl;
 }
 
-void ClaParseReply::setId(QString idext)
+void ClaParseReply::setId(QString *idext)
 {
-    id = idext;
+    id = *idext;
 }
 
 void ClaParseReply::RouteOptions(const QJsonObject jsonObj)

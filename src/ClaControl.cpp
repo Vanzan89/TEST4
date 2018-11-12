@@ -6,13 +6,12 @@ ClaControl::ClaControl(QObject* parent) : QObject(parent)
        replyer = new ClaParseReply(this);
        manager = new QNetworkAccessManager(this);
        token = new const QString;
-       id = new QString;
        connect(this, SIGNAL(signalAuth(const QString,const QString)),requester,SLOT(makeRequestAuth(const QString, const QString)));
        connect(requester,SIGNAL(signalGoPostRequest(const QNetworkRequest,const QByteArray)),this,SLOT(goPostRequest(const QNetworkRequest,const QByteArray)));
        connect(manager,SIGNAL(finished(QNetworkReply*)),replyer,SLOT(replyParse(QNetworkReply*)));
        connect(replyer,SIGNAL(signalTakeToken(const QString)),this,SLOT(takeToken(const QString)));
        connect(this,SIGNAL(signalEnterID()),this,SLOT(enterIdDoc()));
-       connect(this,SIGNAL(signalDoc(QString,QString,QString)),requester,SLOT(makeRequestDoc(const QString,const QString, const QString)));
+       connect(this,SIGNAL(signalDoc(const QString *,const QString,const QString)),requester,SLOT(makeRequestDoc(const QString *,const QString, const QString)));
        connect(requester,SIGNAL(signalGoGetRequest(const QNetworkRequest)),this,SLOT(goGetRequest(const QNetworkRequest)));
        connect(replyer,SIGNAL(signalTakeDocCard(const QString,const QString,const QString)),this,SLOT(takeDocCard(const QString,const QString,const QString)));
        connect(this,SIGNAL(signalChooser()),this,SLOT(Chooser()));
@@ -33,10 +32,11 @@ void ClaControl::goLogin()
 }
 
 //We got a token now
-void ClaControl::takeToken(const QString tokenRepl)
+void ClaControl::takeToken(const QString tokenReply)
 {
-     token =  &tokenRepl;
-    emit signalEnterID();
+     tokentemp = tokenReply;
+     token =  &tokentemp;
+     emit signalEnterID();
 }
 
 //Send post request
@@ -54,8 +54,21 @@ void ClaControl::goGetRequest(const QNetworkRequest request)
 //Need to rebuild for reading the config list
 void ClaControl::enterIdDoc()
 {
-
+  /*  QString filename = "/config.txt";
+    QFile inputFile(filename);
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          ...
+       }
+       inputFile.close();
+    }
+*/
     qInfo() << "Enter ID of the document: ";
+     id = new QString;
     QTextStream s3(stdin);
     *id = s3.readLine();
     emit signalChooser();
@@ -64,6 +77,7 @@ void ClaControl::enterIdDoc()
 //Choose what to do with document
 void ClaControl::Chooser ()
 {
+
     qInfo() << "What do you want do to know? \n Type And Number (1) \n Get PDF (2)";
     QTextStream s4(stdin);
     int choose = s4.readLine().toInt();
@@ -74,14 +88,14 @@ void ClaControl::Chooser ()
         break;
     case 2:
         replyer->setState(choose);
-        replyer->setId(*id);
+        replyer->setId(id);
         type = "pdf";
         break;
     default: {
         qInfo() << "You have entered the invalid number";
     }
     }
-           emit signalDoc (*id,*token,type);
+           emit signalDoc (id,*token,type);
 }
 
 //Some info from Document Card
@@ -90,6 +104,7 @@ void ClaControl::takeDocCard(const QString numberReply, const QString senderRepl
     qDebug() << "Number of the document: " << numberReply;
     qDebug() << "Type of the document: " << documentTypeCodeReply;
     qDebug() << "sender ID: " << senderReply;
+    delete id;
     emit signalEnterID();
 }
 
