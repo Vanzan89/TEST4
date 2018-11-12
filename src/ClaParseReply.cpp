@@ -4,6 +4,7 @@
 
 ClaParseReply::ClaParseReply(QObject* parent) : QObject(parent)
 {
+        id = new QString;
         connect(this,SIGNAL(signalNotToken(const QJsonObject)),this,SLOT(RouteOptions(const QJsonObject)));
         connect(this,SIGNAL(signalParseDocCard(const QJsonObject)),this,SLOT(ParseDocCard(const QJsonObject)));
         connect(this,SIGNAL(signalParsePDF(const QJsonObject)),this,SLOT(ParsePDF(const QJsonObject)));
@@ -34,7 +35,7 @@ void ClaParseReply::setState(int StateFromControl)
 
 void ClaParseReply::setId(QString *idext)
 {
-    id = *idext;
+    id = idext;
 }
 
 void ClaParseReply::RouteOptions(const QJsonObject jsonObj)
@@ -67,7 +68,7 @@ void ClaParseReply::ParsePDF(const QJsonObject jsonObj)
 {
             QString pdfBase64 = jsonObj["content"].toString();
             QByteArray b64 = QByteArray::fromBase64(pdfBase64.toUtf8());
-            QString filename = "/document" + id + ".pdf";
+            QString filename = "/document" + *id + ".pdf";
             QFile f(filename);
             f.open(QIODevice::WriteOnly);
             f.write(b64);
