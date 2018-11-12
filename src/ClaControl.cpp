@@ -6,6 +6,7 @@ ClaControl::ClaControl(QObject* parent) : QObject(parent)
        replyer = new ClaParseReply(this);
        manager = new QNetworkAccessManager(this);
        token = new const QString;
+       id = new QString;
        connect(this, SIGNAL(signalAuth(const QString,const QString)),requester,SLOT(makeRequestAuth(const QString, const QString)));
        connect(requester,SIGNAL(signalGoPostRequest(const QNetworkRequest,const QByteArray)),this,SLOT(goPostRequest(const QNetworkRequest,const QByteArray)));
        connect(manager,SIGNAL(finished(QNetworkReply*)),replyer,SLOT(replyParse(QNetworkReply*)));
@@ -64,21 +65,10 @@ void ClaControl::enterIdDoc()
        {
           QString line = in.readLine();
             list << line;
-        //    id = new QString;
-       //   *id = line;
        }
        idFile.close();
     }
-    qDebug() << list[0];
-    qDebug() << list[1];
     qDebug() << list;
-    QString s;
-    foreach  (s, list)
-    {
-        qDebug() << s;
-    }
-    qDebug() << "That's all!";
-
     emit signalChooser();
 }
 
@@ -86,6 +76,8 @@ void ClaControl::enterIdDoc()
 void ClaControl::Chooser ()
 {
 
+    id = &list[0];
+    qDebug() << *id;
     qInfo() << "What do you want do to know? \n Type And Number (1) \n Get PDF (2)";
     QTextStream s4(stdin);
     int choose = s4.readLine().toInt();
@@ -120,6 +112,6 @@ void ClaControl::takeDocCard(const QString numberReply, const QString senderRepl
 void ClaControl::takePDFReady(const QString info)
 {
     qDebug() << info;
-    emit signalEnterID();
+    emit signalChooser();
 }
 
