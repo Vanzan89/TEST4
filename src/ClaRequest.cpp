@@ -19,12 +19,18 @@ void ClaRequest::makeRequestAuth(const QString username, const QString password)
 }
 
 //Request for Document
-void ClaRequest::makeRequestDoc(const QString *id, const QString token, const QString type)
+void ClaRequest::makeRequestDoc(const QList<QString> *list, const QString token, const QString type)
 {
-
+    for (int i =0; i < list->count(); i++)
+    {
+    idqs = (*list)[i];
+    id = &idqs;
+    qDebug() << *id;
+    emit signalSetId (id);
     QNetworkRequest request;
     request.setUrl(QUrl("http://courier-api.esphere.ru/api/document/" + type.toUtf8() + "/" + (*id).toUtf8()));
     request.setRawHeader("Content-Type", "application/json");
     request.setRawHeader("Auth-Token", token.toUtf8());
     emit signalGoGetRequest (request);
+    }
 }

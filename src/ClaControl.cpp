@@ -7,28 +7,34 @@ ClaControl::ClaControl(QObject* parent) : QObject(parent)
        manager = new QNetworkAccessManager(this);
        token = new const QString;
        id = new QString;
+       list = new QList<QString>;
        connect(this, SIGNAL(signalAuth(const QString,const QString)),requester,SLOT(makeRequestAuth(const QString, const QString)));
        connect(requester,SIGNAL(signalGoPostRequest(const QNetworkRequest,const QByteArray)),this,SLOT(goPostRequest(const QNetworkRequest,const QByteArray)));
        connect(manager,SIGNAL(finished(QNetworkReply*)),replyer,SLOT(replyParse(QNetworkReply*)));
        connect(replyer,SIGNAL(signalTakeToken(const QString)),this,SLOT(takeToken(const QString)));
        connect(this,SIGNAL(signalEnterID()),this,SLOT(enterIdDoc()));
-       connect(this,SIGNAL(signalDoc(const QString *,const QString,const QString)),requester,SLOT(makeRequestDoc(const QString *,const QString, const QString)));
+       connect(this,SIGNAL(signalDoc(const QList<QString> *,const QString,const QString)),requester,SLOT(makeRequestDoc(const QList<QString> *,const QString, const QString)));
        connect(requester,SIGNAL(signalGoGetRequest(const QNetworkRequest)),this,SLOT(goGetRequest(const QNetworkRequest)));
        connect(replyer,SIGNAL(signalTakeDocCard(const QString,const QString,const QString)),this,SLOT(takeDocCard(const QString,const QString,const QString)));
        connect(this,SIGNAL(signalChooser()),this,SLOT(Chooser()));
        connect(replyer,SIGNAL(signalGoLoginAgain()),this,SLOT(goLogin()));
        connect(replyer,SIGNAL(signalTakePDFReady(QString)),this,SLOT(takePDFReady(QString)));
+       connect(requester,SIGNAL(signalSetId(QString *)),replyer,SLOT(setId(QString *)));
 }
 
 //Enter the login and password for auth
 void ClaControl::goLogin()
 {
-    qInfo() << "Enter the username";
+   /* qInfo() << "Enter the username";
     QTextStream s1(stdin);
     QString username = s1.readLine();
     qInfo() << "Enter the password";
     QTextStream s2(stdin);
     QString password = s2.readLine();
+    */
+    QString username = "Vpetrov3";
+    QString password = "Password3";
+
     emit signalAuth  (username,  password);
 }
 
@@ -64,20 +70,17 @@ void ClaControl::enterIdDoc()
        while (!in.atEnd())
        {
           QString line = in.readLine();
-            list << line;
+            *list << line;
        }
        idFile.close();
     }
-    qDebug() << list;
     emit signalChooser();
 }
 
 //Choose what to do with document
 void ClaControl::Chooser ()
 {
-
-    id = &list[0];
-    qDebug() << *id;
+    qDebug() << *list;
     qInfo() << "What do you want do to know? \n Type And Number (1) \n Get PDF (2)";
     QTextStream s4(stdin);
     int choose = s4.readLine().toInt();
@@ -95,8 +98,9 @@ void ClaControl::Chooser ()
         qInfo() << "You have entered the invalid number";
     }
     }
-           emit signalDoc (id,*token,type);
-}
+           emit signalDoc (list,*token,type);
+   }
+
 
 //Some info from Document Card
 void ClaControl::takeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply)

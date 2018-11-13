@@ -67,6 +67,7 @@ void ClaParseReply::ParseDocCard(const QJsonObject jsonObj)
 void ClaParseReply::ParsePDF(const QJsonObject jsonObj)
 {
             QString pdfBase64 = jsonObj["content"].toString();
+            qDebug() << *id;
             QByteArray b64 = QByteArray::fromBase64(pdfBase64.toUtf8());
             QString filename = "/document" + *id + ".pdf";
             QFile f(filename);
