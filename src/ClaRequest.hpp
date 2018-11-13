@@ -26,7 +26,7 @@ signals:
      signalSetId(QString *id);
 public slots:
      void makeRequestAuth (const QString username, const QString password);
-     void makeRequestDoc (const QList<QString> *id, const QString token, const QString type);
+     void makeRequestDoc (const QString *id, const QString token, const QString type);
 };
 
 #endif

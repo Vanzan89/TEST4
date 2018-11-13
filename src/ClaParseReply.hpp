@@ -15,9 +15,10 @@ private:
 public:
       ClaParseReply(QObject* parent = nullptr);
       int StateReply;
+      int index;
 signals:
      signalTakeToken(const QString tokenReply);
-      signalNotToken (const QJsonObject jsonObj);
+     signalNotToken (const QJsonObject jsonObj);
      signalParseDocCard (const QJsonObject jsonObj);
      signalParsePDF (const QJsonObject jsonObj);
      signalTakeDocCard(const QString numberReply, const QString senderReply, const QString documentTypeCodeReply);

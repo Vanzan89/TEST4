@@ -16,6 +16,8 @@ private:
     ClaParseReply *replyer;
     QNetworkAccessManager *manager;
     QString type;
+    int choose;
+    int input;
 public:
     explicit ClaControl(QObject* parent = nullptr);
     QString *id;
@@ -23,7 +25,7 @@ public:
     QList<QString> *listptr;
     QString idext;
     QString *qspointer;
-    int index;
+    int i;
 public slots:
     void takeToken(const QString tokenRepl);
     void goPostRequest(const QNetworkRequest request, const QByteArray content);
@@ -35,7 +37,7 @@ public slots:
     void takePDFReady(const QString info);
 signals:
          signalAuth (const QString username, const QString password);
-         signalDoc (const QList<QString> *id, const QString token, const QString type);
+         signalDoc (const QString *id, const QString token, const QString type);
          signalEnterID();
          signalChooser();
 };

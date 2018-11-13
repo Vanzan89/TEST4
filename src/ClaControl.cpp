@@ -8,12 +8,13 @@ ClaControl::ClaControl(QObject* parent) : QObject(parent)
        token = new const QString;
        id = new QString;
        list = new QList<QString>;
+       choose = 0;
        connect(this, SIGNAL(signalAuth(const QString,const QString)),requester,SLOT(makeRequestAuth(const QString, const QString)));
        connect(requester,SIGNAL(signalGoPostRequest(const QNetworkRequest,const QByteArray)),this,SLOT(goPostRequest(const QNetworkRequest,const QByteArray)));
        connect(manager,SIGNAL(finished(QNetworkReply*)),replyer,SLOT(replyParse(QNetworkReply*)));
        connect(replyer,SIGNAL(signalTakeToken(const QString)),this,SLOT(takeToken(const QString)));
        connect(this,SIGNAL(signalEnterID()),this,SLOT(enterIdDoc()));
-       connect(this,SIGNAL(signalDoc(const QList<QString> *,const QString,const QString)),requester,SLOT(makeRequestDoc(const QList<QString> *,const QString, const QString)));
+       connect(this,SIGNAL(signalDoc(const QString *,const QString,const QString)),requester,SLOT(makeRequestDoc(const QString *,const QString, const QString)));
        connect(requester,SIGNAL(signalGoGetRequest(const QNetworkRequest)),this,SLOT(goGetRequest(const QNetworkRequest)));
        connect(replyer,SIGNAL(signalTakeDocCard(const QString,const QString,const QString)),this,SLOT(takeDocCard(const QString,const QString,const QString)));
        connect(this,SIGNAL(signalChooser()),this,SLOT(Chooser()));
@@ -81,25 +82,40 @@ void ClaControl::enterIdDoc()
 void ClaControl::Chooser ()
 {
     qDebug() << *list;
+    int limit = list->count();
+    i = replyer->index;
+    if (i < limit)
+    {
+    idext = (*list)[i];
+    id = &idext;
     qInfo() << "What do you want do to know? \n Type And Number (1) \n Get PDF (2)";
+    while (choose == 0)
+    {
     QTextStream s4(stdin);
-    int choose = s4.readLine().toInt();
+     choose = s4.readLine().toInt();
+    }
     switch (choose) {
     case 1:
         replyer->setState(choose);
         type = "card";
+        input = 1;
         break;
     case 2:
         replyer->setState(choose);
         replyer->setId(id);
         type = "pdf";
+        input = 1;
         break;
     default: {
         qInfo() << "You have entered the invalid number";
     }
     }
-           emit signalDoc (list,*token,type);
+           emit signalDoc (id,*token,type);
    }
+else {
+    qDebug() << "ITS OVA!";
+}
+}
 
 
 //Some info from Document Card

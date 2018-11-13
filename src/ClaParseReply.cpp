@@ -5,6 +5,7 @@
 ClaParseReply::ClaParseReply(QObject* parent) : QObject(parent)
 {
         id = new QString;
+        index = 0;
         connect(this,SIGNAL(signalNotToken(const QJsonObject)),this,SLOT(RouteOptions(const QJsonObject)));
         connect(this,SIGNAL(signalParseDocCard(const QJsonObject)),this,SLOT(ParseDocCard(const QJsonObject)));
         connect(this,SIGNAL(signalParsePDF(const QJsonObject)),this,SLOT(ParsePDF(const QJsonObject)));
@@ -24,6 +25,7 @@ void ClaParseReply::replyParse(QNetworkReply *reply)
     emit signalTakeToken (tokenReply);
         }
     else {
+        index++;
      emit signalNotToken (jsonObj);
       }
 }
